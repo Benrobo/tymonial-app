@@ -83,6 +83,9 @@ function TemplateCont() {
                     <button className="rounded-md ml-5 px-4 py-2 bg-green-200 text-dark-200 mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all " onClick={"toggleActive"}>
                         Form UI
                     </button>
+                    <button className="rounded-md ml-5 px-4 py-2 bg-green-200 text-dark-200 mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all " onClick={"toggleActive"}>
+                        Form Page
+                    </button>
                     <button className="rounded-md ml-5 px-4 py-2 bg-dark-200 text-white-200 mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all " onClick={"toggleActive"}>
                         Testimonial UI
                     </button>
