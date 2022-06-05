@@ -42,33 +42,38 @@ function TestimonialForm({ toggleTestName }) {
 
 
     return (
-        <div className="w-full h-screen absolute top-0 left-0 px-7 overflow-y-hidden flex flex-row items-start justify-between bg-dark-300">
-            <div id="left" className="w-[40%] h-[520px] mt-5 p-9 bg-dark-200 rounded-md hover:overflow-y-scroll shadow-lg relative ">
-                <div className="w-full flex flex-col items-start justify-start">
-                    <h2 className="text-[20px] ">Form Settings</h2>
-                    <p className="text-white-300 text-[15px] ">Edit the following tesimonial settings below</p>
-                    <button className="rounded-md bg-red-200 px-3 py-2 absolute top-[-10px] right-[-10px]  scale-[.70] " onClick={toggleTestName}>Close</button>
+        <div className="w-full h-auto px-7 flex flex-row items-start justify-between">
+            <div id="left" className="w-[40%] h-auto mt-5 flex flex-col items-start justify-start ">
+                <div id='form1' className="w-full bg-dark-200 p-9 rounded-md shadow-lg relative ">
+                    <div className="w-full flex flex-col items-start justify-start">
+                        <h2 className="text-[20px] ">Form Settings</h2>
+                        <p className="text-white-300 text-[15px] ">Edit the following tesimonial settings below</p>
+                        {/* <button className="rounded-md bg-red-200 px-3 py-2 absolute top-[-10px] right-[-10px]  scale-[.70] " onClick={toggleTestName}>Close</button> */}
+                    </div>
+                    <br />
+                    <div className="w-full h-auto">
+                        <li className="w-full flex flex-row items-center justify-between">
+                            <p className="text-white-100 text-[15px] font-extrabold ">Display Username</p>
+                            <Switch checked={isUserName} color="#64f4acea" />
+                        </li>
+                        <li className="w-full flex flex-row items-center justify-between mt-4">
+                            <p className="text-white-100 text-[15px] font-extrabold ">Display Ratings</p>
+                            <Switch checked={isRatings} color="#64f4acea" />
+                        </li>
+                        <li className="w-full flex flex-row items-center justify-between mt-4">
+                            <p className="text-white-100 text-[15px] font-extrabold ">Display Career</p>
+                            <Switch onChange={handleSwitch3} checked={isUserCareer} color="#64f4acea" />
+                        </li>
+                        <li className="w-full flex flex-row items-center justify-between mt-4">
+                            <p className="text-white-100 text-[15px] font-extrabold ">Profile Pics</p>
+                            <Switch onChange={handleSwitch4} checked={isProfilePic} color="#64f4acea" />
+                        </li>
+                        <br />
+
+                    </div>
                 </div>
                 <br />
-                <div className="w-full h-auto">
-                    <li className="w-full flex flex-row items-center justify-between">
-                        <p className="text-white-100 text-[15px] font-extrabold ">Display Username</p>
-                        <Switch checked={isUserName} color="#64f4acea" />
-                    </li>
-                    <li className="w-full flex flex-row items-center justify-between mt-4">
-                        <p className="text-white-100 text-[15px] font-extrabold ">Display Ratings</p>
-                        <Switch checked={isRatings} color="#64f4acea" />
-                    </li>
-                    <li className="w-full flex flex-row items-center justify-between mt-4">
-                        <p className="text-white-100 text-[15px] font-extrabold ">Display Career</p>
-                        <Switch onChange={handleSwitch3} checked={isUserCareer} color="#64f4acea" />
-                    </li>
-                    <li className="w-full flex flex-row items-center justify-between mt-4">
-                        <p className="text-white-100 text-[15px] font-extrabold ">Profile Pics</p>
-                        <Switch onChange={handleSwitch4} checked={isProfilePic} color="#64f4acea" />
-                    </li>
-                    <br />
-                    <br />
+                <div id='form2' className="w-full bg-dark-200 p-9 rounded-md shadow-lg relative ">
                     <div className="w-full flex flex-col items-start justify-start">
                         <h2 className="text-[20px] ">Form UI</h2>
                         <p className="text-white-300 text-[15px] ">Edit the following tesimonial settings below</p>
@@ -78,13 +83,13 @@ function TestimonialForm({ toggleTestName }) {
                         <Input placeholder="Form Sub-Heading" name="subHeading" onChange={handleFormHeadingInputs} style={{ background: "#0e0e0e" }} />
                     </div>
                     <br />
-                    <br />
                     <button className="px-4 py-2 rounded-md bg-green-200 text-dark-100 font-extrabold " onClick={saveFormUiSettings}>Save Settings</button>
-                    <br />
                 </div>
+                <br />
+                <br />
             </div>
-            <div id="right" className="w-[55%] h-screen p-4 flex flex-col items-center justify-center bg-[#000] overflow-y-scroll hover:overflow-y-scroll">
-                <div id="form" className="w-[450px] bg-dark-100 rounded-md h-auto max-h-[750px] overflow-hidden relative transition-all">
+            <div id="right" className="w-[55%] h-auto p-4 flex flex-col items-center justify-center">
+                <div id="form" className="w-[450px] bg-dark-300 rounded-md h-auto max-h-[750px] overflow-hidden relative transition-all">
                     <div className="w-full flex flex-col items-start justify-start bg-dark-200 p-4 ">
                         <h2 className="text-[20px] ">{formInputs.heading}</h2>
                         <p className="text-white-300 text-[15px] ">{formInputs.subHeading}</p>
@@ -125,6 +130,7 @@ function TestimonialForm({ toggleTestName }) {
                 <br />
                 <div className="w-full h-[30px]"></div>
             </div>
+
         </div>
     )
 }

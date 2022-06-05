@@ -29,7 +29,7 @@ function Templates() {
 
     return (
         <Layout>
-            <div className="relative  flex flex-row items-start justify-start w-screen h-screen">
+            <div className="relative  flex flex-row items-start justify-start w-screen h-screen overflow-hidden ">
                 <SideBar active="template" />
                 <div className="w-full h-screen py-2 px-3 overflow-y-hidden" >
                     {!activeTemplate && <div id="head" className="w-full h-auto p-3  flex flex-row items-center justify-start ">
@@ -87,7 +87,7 @@ function TemplateCont({ toggleTemplate }) {
     }
 
     return (
-        <div className="w-full h-screen px-3 ">
+        <div className="w-full h-auto overflow-y-scroll px-3 ">
             <div id="head" className="w-full h-auto p-3  flex flex-row items-center justify-start ">
                 <button className={`rounded-md ml-5 px-4 py-2 bg-dark-200 text-white-200 mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all `} onClick={toggleTemplate}>
                     Back
@@ -100,13 +100,13 @@ function TemplateCont({ toggleTemplate }) {
                     <button name="form-ui" className={`rounded-md ml-5 px-4 py-2 ${activeTestName === "form-ui" ? "bg-green-200 text-dark-200" : "bg-dark-200 text-white-200"} mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all hover:bg-green-200 hover:text-dark-100 `} onClick={toggleTestName}>
                         Form UI
                     </button>
-                    <button name="form-page" className={`rounded-md ml-5 px-4 py-2 ${activeTestName === "form-page" ? "bg-green-200 text-dark-200" : "bg-dark-200 text-white-200"} mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all hover:bg-green-200 hover:text-dark-100 `} onClick={"toggleActive"}>
+                    <button name="form-page" className={`rounded-md ml-5 px-4 py-2 ${activeTestName === "form-page" ? "bg-green-200 text-dark-200" : "bg-dark-200 text-white-200"} mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all hover:bg-green-200 hover:text-dark-100 `} onClick={toggleTestName}>
                         Form Page
                     </button>
-                    <button name="testimonial-ui" className={`rounded-md ml-5 px-4 py-2 ${activeTestName === "testimonial-ui" ? "bg-green-200 text-dark-200" : "bg-dark-200 text-white-200"} mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all hover:bg-green-200 hover:text-dark-100 `} onClick={"toggleActive"}>
+                    <button name="testimonial-ui" className={`rounded-md ml-5 px-4 py-2 ${activeTestName === "testimonial-ui" ? "bg-green-200 text-dark-200" : "bg-dark-200 text-white-200"} mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all hover:bg-green-200 hover:text-dark-100 `} onClick={toggleTestName}>
                         Testimonial UI
                     </button>
-                    <button name="settings" className={`rounded-md ml-5 px-4 py-2 ${activeTestName === "settings" ? "bg-green-200 text-dark-200" : "bg-dark-200 text-white-200"} mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all hover:bg-green-200 hover:text-dark-100 `} onClick={"toggleActive"}>
+                    <button name="settings" className={`rounded-md ml-5 px-4 py-2 ${activeTestName === "settings" ? "bg-green-200 text-dark-200" : "bg-dark-200 text-white-200"} mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all hover:bg-green-200 hover:text-dark-100 `} onClick={toggleTestName}>
                         Settings
                     </button>
                 </div>
@@ -116,8 +116,12 @@ function TemplateCont({ toggleTemplate }) {
                     activeTestName === "form-ui" ?
                         <TestimonialForm toggleTestName={toggleTestName} />
                         :
-                        ""
+                        activeTestName === "form-page" ?
+                            "Form Page"
+                            :
+                            ""
                 }
+                <div className="w-full h-[150px]"></div>
             </div>
         </div>
     )
