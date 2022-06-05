@@ -6,6 +6,8 @@ import { Notification } from '../../helpers';
 import moment from "moment"
 import { MdOutlineDescription } from 'react-icons/md'
 import TestimonialForm from './form';
+import Testimonial from './testimonials';
+import TemplateSettings from './settings';
 
 const notif = new Notification(4000)
 
@@ -119,7 +121,13 @@ function TemplateCont({ toggleTemplate }) {
                         activeTestName === "form-page" ?
                             "Form Page"
                             :
-                            ""
+                            activeTestName === "testimonial-ui" ?
+                                <Testimonial />
+                                :
+                                activeTestName === "settings" ?
+                                    <TemplateSettings />
+                                    :
+                                    ""
                 }
                 <div className="w-full h-[150px]"></div>
             </div>
