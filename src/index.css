@@ -68,19 +68,31 @@ body{
 }
 
 #montage-testimonial-container{
-  width: 100vw;
-  /* display: flex;
+  width: 100%;
+  display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: row;
-  overflow-x: hidden;
+  overflow-x: scroll;
   row-gap: 10;
-  white-space: nowrap; */
-  display: grid;
+  white-space: nowrap;
+  /* display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 32%;
-  gap: 5;
-  
+  gap: 10;
+  transition: .2s all ease;
+   */
+}
+
+
+#montage-testimonial-container::-webkit-scrollbar{
+  width: 3px;
+  height: 3px;
+}
+
+
+#montage-testimonial-container::-webkit-scrollbar-thumb{
+  border-radius: 30px;
 }
 
 #montage-testimonial-container #testimonial-types-card{
