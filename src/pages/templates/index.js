@@ -8,6 +8,7 @@ import { MdOutlineDescription } from 'react-icons/md'
 import TestimonialForm from './form';
 import Testimonial from './testimonials';
 import TemplateSettings from './settings';
+import FormPage from './formPage';
 
 const notif = new Notification(4000)
 
@@ -75,7 +76,7 @@ export default Templates
 function TemplateCont({ toggleTemplate }) {
 
     const [activeTestimonialForm, setActiveTestimonialForm] = useState(false);
-    const [activeTestName, setActiveTestName] = useState("")
+    const [activeTestName, setActiveTestName] = useState("form-ui")
 
     // toggleTestForm
     const toggleTestForm = () => setActiveTestName("")
@@ -119,7 +120,7 @@ function TemplateCont({ toggleTemplate }) {
                         <TestimonialForm toggleTestName={toggleTestName} />
                         :
                         activeTestName === "form-page" ?
-                            "Form Page"
+                            <FormPage />
                             :
                             activeTestName === "testimonial-ui" ?
                                 <Testimonial />

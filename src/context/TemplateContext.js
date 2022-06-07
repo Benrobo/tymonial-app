@@ -16,6 +16,43 @@ export function TemplateContextProvider({ children }) {
         subHeading: "Your feedback is highly appreciated"
     })
     const [ratingsVal, setRatingsVal] = useState(1)
+
+    // testimonial form colors
+    const [formColors, setFormColors] = useState({
+        bgHeader: "",
+        formBg: "",
+        headerPriColor: "",
+        headerSecColor: "",
+        inputBg: "",
+        inputColor: "",
+        buttonBg: "",
+        buttonColor: "",
+        ratingColor: ""
+    })
+
+    // handle form ui
+    const handleFormUI = (e) => {
+        const { name } = e.target.dataset;
+        if (name !== undefined) {
+            const value = e.target.value;
+            setFormColors((prev) => ({ ...prev, [name]: value }))
+        }
+    }
+
+    const resetFormUi = () => {
+        setFormColors({
+            bgHeader: "",
+            formBg: "",
+            headerPriColor: "",
+            headerSecColor: "",
+            inputBg: "",
+            inputColor: "",
+            buttonBg: "",
+            buttonColor: "",
+            ratingColor: ""
+        })
+    }
+
     // form heading input
     const handleFormHeadingInputs = (e) => {
         const name = e.target.name;
@@ -30,7 +67,7 @@ export function TemplateContextProvider({ children }) {
     const handleSwitch4 = () => setIsProfilePic(!isProfilePic)
 
     return (
-        <TemplateContext.Provider value={{ isUserName, isUserCareer, isRatings, isProfilePic, formInputs, ratingsVal, setRatingsVal, handleFormHeadingInputs, handleSwitch3, handleSwitch4 }}>
+        <TemplateContext.Provider value={{ isUserName, isUserCareer, isRatings, isProfilePic, formInputs, ratingsVal, formColors, setRatingsVal, handleFormHeadingInputs, handleSwitch3, handleSwitch4, handleFormUI, resetFormUi }}>
             {children}
         </TemplateContext.Provider>
     )

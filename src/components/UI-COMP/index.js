@@ -24,3 +24,14 @@ export function Input({ ...rest }) {
         <input {...rest} className={`w-full rounded-md ourtline-none bg-dark-200 px-3 py-3 text-white-200 `} />
     )
 }
+
+export function ColorPallete({ title = "Color Pallete", name, value = "#000000", handleColor }) {
+
+    return (
+        <li className="w-[400px] flex flex-row items-start justify-between mb-3">
+            <label className="text-white-200 mr-4">{title} : <span className="font-extrabold text-green-200" style={{ color: value }}>{value}</span> </label>
+            <input data-name={name} type="color" className='rounded-md' onChange={handleColor} />
+        </li>
+    )
+}
+
