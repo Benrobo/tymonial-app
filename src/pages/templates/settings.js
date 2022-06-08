@@ -1,6 +1,24 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 
 function TemplateSettings() {
+
+    const [isCopied, setIsCopied] = useState(false)
+
+    const formUrl = `http://localhost:3000/feedback/template_id`
+
+    if (isCopied) {
+        setTimeout(() => {
+            setIsCopied(!isCopied)
+        }, 1500)
+    }
+
+    const copyUrl = () => {
+        navigator.clipboard.writeText(formUrl)
+        setIsCopied(!isCopied)
+    }
+
+
+
     return (
         <div className="w-full h-screen px-8">
             <div className="w-full">
@@ -10,12 +28,18 @@ function TemplateSettings() {
             </div>
             <br />
             <div className="w-auto">
-                <div className="w-[300px] flex flex-row items-end justify-between overflow-x-hidden h-[45px] bg-dark-200 rounded-md mr-2 ">
-                    <input type="text" className=" bg-none outline-none border-none" />
-                    <button className="btn w-[100px] h-[45px] bg-green-200 text-dark-100 font-extrabold ">
-                        Copy URL
+                <p className="text-white-200">
+                    Feedback Form URL
+                </p>
+                <p className="text-white-300 text-[12px] ">Copy, Share and Get feedback from this url.</p>
+                <br />
+                <div className="w-[350px] flex flex-row items-end justify-between overflow-x-hidden h-[45px] rounded-md mr-2 ">
+                    <input type="text" value={formUrl} className="w-[350px]  px-3 py-3 bg-dark-200 text-white-200 outline-none border-none" />
+                    <button className="btn w-[100px] h-[45px] bg-green-200 text-dark-100 font-extrabold " onClick={copyUrl}>
+                        {isCopied ? "Url Copied" : "Copy URL"}
                     </button>
                 </div>
+
             </div>
         </div>
     )

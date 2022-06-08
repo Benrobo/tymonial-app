@@ -22,6 +22,11 @@ function SideBar({ active }) {
                             Templates
                         </li>
                     </Link>
+                    <Link to="/feedbacks" className="w-full">
+                        <li className={`w-full mt-4 px-4 py-3 font-extrabold rounded-md cursor-pointer ${active === "feedbacks" ? "bg-green-200 text-dark-100" : "bg-dark-100 text-white-100"}`}>
+                            FeedBacks
+                        </li>
+                    </Link>
                     <Link to="/stats" className="w-full">
                         <li className={`w-full mt-4 px-4 py-3 font-extrabold rounded-md cursor-pointer ${active === "stats" ? "bg-green-200 text-dark-100" : "bg-dark-100 text-white-100"}`}>
                             Settings

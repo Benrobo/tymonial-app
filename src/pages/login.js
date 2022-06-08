@@ -3,6 +3,7 @@ import { Layout, DomHead } from "../components";
 import SideBar from '../components/Navbar/SideBar';
 import { Notification, validateEmail } from "../helpers"
 import DataContext from "../context/DataContext"
+import { Navigate } from 'react-router';
 
 const notif = new Notification(4000)
 
@@ -13,9 +14,9 @@ function Login() {
     const { isAuthenticated } = useContext(DataContext)
     const [active, setActive] = useState(false)
 
-    // if (isAuthenticated) {
-    //     return window.location = "/dashboard"
-    // }
+    if (true) {
+        return <Navigate to="/dashboard" />
+    }
 
 
     function toggleForm() {

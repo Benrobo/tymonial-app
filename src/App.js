@@ -7,6 +7,8 @@ import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import Templates from "./pages/templates";
 import { TemplateContextProvider } from "./context/TemplateContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import FeedBacks from "./pages/feedbacks/feedbacks";
 
 function App() {
   return (
@@ -15,10 +17,12 @@ function App() {
         <TemplateContextProvider>
           <Router>
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/template" element={<Templates />} />
+              <Route path="/" element={<ProtectedRoute path="/" component={<Dashboard />} />} />
+              <Route path="/dashboard" element={<ProtectedRoute path="/" component={<Dashboard />} />} />
+              <Route path="/template" element={<ProtectedRoute path="/" component={<Templates />} />} />
+              <Route path="/feedbacks" element={<ProtectedRoute path="/" component={<FeedBacks />} />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/feedback/:id" element={<ProtectedRoute path="/" component={<Login />} />} />
             </Routes>
           </Router>
         </TemplateContextProvider>
