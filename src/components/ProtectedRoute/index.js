@@ -10,7 +10,7 @@ function ProtectedRoute({ component, ...rest }) {
     return (
         <>
             {
-                true ?
+                isAuthenticated ?
                     component
                     :
                     <Navigate to={"/login"} />

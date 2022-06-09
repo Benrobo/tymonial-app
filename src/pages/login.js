@@ -14,7 +14,7 @@ function Login() {
     const { isAuthenticated } = useContext(DataContext)
     const [active, setActive] = useState(false)
 
-    if (true) {
+    if (isAuthenticated) {
         return <Navigate to="/dashboard" />
     }
 
@@ -27,9 +27,9 @@ function Login() {
         <div className="relative  flex flex-row items-center justify-center w-screen h-screen">
             <DomHead />
             <div className="w-[450px] h-auto mx-auto  flex flex-col items-center justify-center p-2 ">
-                <h1 className="text-green-200 font-extrabold text-[55px] ">Trakka</h1>
+                <h1 className="text-green-200 font-extrabold text-[55px] ">Tymonial</h1>
                 <p className="text-white-200 font-extrabold text-[15px] ">
-                    Increase your productivity
+                    Collect users feedbacks with ease.
                 </p>
                 <br />
                 <div className="w-[350px] h-auto rounded-md p-4 flex flex-col items-center justify-center ">
