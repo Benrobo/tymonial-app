@@ -12,8 +12,8 @@ export function DataContextProvider({ children }) {
     const [user, setUser] = useState({})
 
     useEffect(() => {
-        if (localStorage.getItem("trakka-auth") !== null) {
-            const info = JSON.parse(localStorage.getItem("trakka-auth"))
+        if (localStorage.getItem("tymonial") !== null) {
+            const info = JSON.parse(localStorage.getItem("tymonial"))
             setUser(info)
         }
 
@@ -34,21 +34,21 @@ export function DataContextProvider({ children }) {
 
 function checkAuth() {
 
-    const user = JSON.parse(localStorage.getItem("trakka-auth"))
+    const authToken = localStorage.getItem("authToken")
 
-    if (user === null) {
+    if (authToken === null) {
         return false;
     }
 
-    const { token } = user;
+    const { accessToken } = JSON.parse(authToken);
 
-    if (!token) {
+    if (!accessToken) {
         return false
     }
 
     try {
         // exp gives us date in miliseconds
-        let { exp } = decode(token);
+        let { exp } = decode(accessToken);
 
         // convert milliseconds -> seconds
         let date = new Date().getTime() / 1000;

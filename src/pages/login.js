@@ -4,6 +4,7 @@ import SideBar from '../components/Navbar/SideBar';
 import { Notification, validateEmail } from "../helpers"
 import DataContext from "../context/DataContext"
 import { Navigate } from 'react-router';
+import axios from '../helpers/axiosInstance';
 
 const notif = new Notification(4000)
 
@@ -22,6 +23,7 @@ function Login() {
     function toggleForm() {
         setActive(!active)
     }
+
 
     return (
         <div className="relative  flex flex-row items-center justify-center w-screen h-screen">
@@ -104,27 +106,24 @@ function LoginForm({ toggleForm, setActiveName }) {
         try {
             const data = { ...inputs }
 
-            const url = "http://localhost:8080/api/v2/auth/login"
+            const url = "/feedbacks/get?templateId=scscdsscc&type=user&userId=fa54431c-47e3-443e-907f-65c7e2489344"
             setLoading(true)
-            const res = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body: JSON.stringify(data)
-            })
-            const result = await res.json()
 
-            setLoading(false)
+            const req = await axios.get(url)
+            const res = await req.data;
 
-            if (result && result.error === true) {
-                return notif.error(result.message)
-            }
+            console.log(res);
 
-            notif.success(result.message)
-            localStorage.setItem("trakka-auth", JSON.stringify(result.data))
-            await sleep(2)
-            window.location = "/dashboard"
+            // setLoading(false)
+
+            // if (result && result.error === true) {
+            //     return notif.error(result.message)
+            // }
+
+            // notif.success(result.message)
+            // localStorage.setItem("trakka-auth", JSON.stringify(result.data))
+            // await sleep(2)
+            // window.location = "/dashboard"
             return
         } catch (err) {
             setLoading(false)
