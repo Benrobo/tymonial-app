@@ -6,7 +6,6 @@ import { Navigate, Route } from "react-router-dom"
 function ProtectedRoute({ component, ...rest }) {
 
     const { isAuthenticated } = useContext(DataContext)
-
     return (
         <>
             {

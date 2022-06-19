@@ -9,6 +9,8 @@ import DataContext from "../../context/DataContext";
 function NavBar() {
     const { logout, isAuthenticated, user } = useContext(DataContext);
 
+    console.log(user);
+
     return (
         <React.Fragment>
             <div className={`relative h-[60px] w-screen bg-dark-200 flex items-center justify-between p-2 shadow-2xl`}>

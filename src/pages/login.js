@@ -4,7 +4,10 @@ import SideBar from '../components/Navbar/SideBar';
 import { Notification, validateEmail } from "../helpers"
 import DataContext from "../context/DataContext"
 import { Navigate } from 'react-router';
-import axios from '../helpers/axiosInstance';
+// import axios from '../helpers/axiosInstance';
+// import axios from 'axios';
+import API_ROUTES from '../config/apiRoutes';
+import Fetch from '../helpers/fetch';
 
 const notif = new Notification(4000)
 
@@ -106,26 +109,30 @@ function LoginForm({ toggleForm, setActiveName }) {
         try {
             const data = { ...inputs }
 
-            const url = "/feedbacks/get?templateId=scscdsscc&type=user&userId=fa54431c-47e3-443e-907f-65c7e2489344"
             setLoading(true)
 
-            const req = await axios.get(url)
-            const res = await req.data;
+            const req = await Fetch(API_ROUTES.login, {
+                method: "POST",
+                body: JSON.stringify({ ...data })
+            })
 
-            console.log(res);
+            const result = req.data;
 
-            // setLoading(false)
+            setLoading(false)
 
-            // if (result && result.error === true) {
-            //     return notif.error(result.message)
-            // }
+            if (result && result.error === true) {
+                return notif.error(result.message)
+            }
 
-            // notif.success(result.message)
-            // localStorage.setItem("trakka-auth", JSON.stringify(result.data))
-            // await sleep(2)
-            // window.location = "/dashboard"
-            return
+            const { id, name, token } = result.data
+
+            notif.success(result.message)
+            localStorage.setItem("tymonial", JSON.stringify({ id, name }))
+            localStorage.setItem("authToken", JSON.stringify({ accessToken: token }))
+            await sleep(2)
+            window.location = "/dashboard"
         } catch (err) {
+            console.log(err);
             setLoading(false)
             return notif.error(err.message)
         }
@@ -188,28 +195,26 @@ function SignupForm({ toggleForm, setActiveName }) {
         try {
             const data = { ...inputs }
 
-            const url = "http://localhost:8080/api/v2/auth/register"
             setLoading(true)
-            const res = await fetch(url, {
+
+            const req = await Fetch(API_ROUTES.register, {
                 method: "POST",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body: JSON.stringify(data)
+                body: JSON.stringify({ ...data })
             })
-            const result = await res.json()
+
+            const result = req.data;
 
             setLoading(false)
 
-            if (result && result.error === true) {
+            if (result && result.error) {
                 return notif.error(result.message)
             }
 
             notif.success(result.message)
             await sleep(2)
             setActiveName("login")
-            return
         } catch (err) {
+            console.log(err);
             setLoading(false)
             return notif.error(err.message)
         }

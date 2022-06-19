@@ -5,40 +5,45 @@ import { Notification } from ".";
 
 const notyf = new Notification(4000)
 
-const authToken = localStorage.getItem("authToken") !== null ? jwtDecode(JSON.parse(localStorage.getItem("authToken"))) : null;
+let authToken = localStorage.getItem("authToken") !== null ? jwtDecode(JSON.parse(localStorage.getItem("authToken"))) : null;
 
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
     headers: {
-        "Authorization": `Bearer ${authToken?.accessToken}`
+        Authorization: `Bearer ${authToken?.accessToken}`
     }
 })
 
 export default axiosInstance
 
-axiosInstance.interceptors.request.use(async req => {
-    if (!authToken) {
-        authToken = localStorage.getItem("authToken") !== null ? jwtDecode(JSON.parse(localStorage.getItem("authToken"))) : null;
+// axiosInstance.interceptors.request.use(async req => {
+//     if (!authToken) {
+//         authToken = localStorage.getItem("authToken") !== null ? jwtDecode(JSON.parse(localStorage.getItem("authToken"))) : null;
 
-        req.headers.Authorization = `Bearer ${authToken}`
-    }
+//         req.headers.Authorization = `Bearer ${authToken}`
+//     }
+//     console.log(authToken);
+//     // check token expiration
+//     // const token = JSON.parse(localStorage.getItem("authToken"))
 
-    // check token expiration
-    const token = JSON.parse(localStorage.getItem("authToken"))
-    let { exp } = jwtDecode(token.accessToken)
-    // convert milliseconds -> seconds
-    let date = new Date().getTime() / 1000;
-    const isExpired = exp < date;
+//     // console.log(token);
 
-    if (isExpired) {
-        const localToken = JSON.parse(localStorage.getItem("authToken"))
-        let newToken = await refreshToken(localToken.accessToken)
-        req.headers.Authorization = `Bearer ${newToken}`
-        return
-    }
+//     // if (token !== null) {
 
-    return req;
-})
+//     //     let { exp } = jwtDecode(token?.accessToken)
+//     //     // convert milliseconds -> seconds
+//     //     let date = new Date().getTime() / 1000;
+//     //     const isExpired = exp < date;
+
+//     //     if (!isExpired) return req
+
+//     //     let newToken = await refreshToken(authToken?.accessToken)
+//     //     req.headers.Authorization = `Bearer ${newToken}`
+
+//     // }
+
+//     return req;
+// })
 
 async function refreshToken(accessToken = "") {
     const url = "/auth/refresh"
@@ -57,5 +62,7 @@ async function refreshToken(accessToken = "") {
     const token = data?.token;
 
     localStorage.setItem("authToken", JSON.stringify({ accessToken: token }))
+
+    return token;
 
 }

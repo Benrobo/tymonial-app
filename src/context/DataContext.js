@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
-import decode from "jwt-decode"
+import jwtDecode from "jwt-decode"
+import axios from "axios"
 
 
 
@@ -48,7 +49,7 @@ function checkAuth() {
 
     try {
         // exp gives us date in miliseconds
-        let { exp } = decode(accessToken);
+        let { exp } = jwtDecode(accessToken);
 
         // convert milliseconds -> seconds
         let date = new Date().getTime() / 1000;

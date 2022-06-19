@@ -18,7 +18,7 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" element={<ProtectedRoute path="/" component={<Dashboard />} />} />
-              <Route path="/dashboard" element={<ProtectedRoute path="/" component={<Dashboard />} />} />
+              <Route path="/dashboard" element={<ProtectedRoute path="/dashboard" component={<Dashboard />} />} />
               <Route path="/template" element={<ProtectedRoute path="/" component={<Templates />} />} />
               <Route path="/feedbacks" element={<ProtectedRoute path="/" component={<FeedBacks />} />} />
               <Route path="/login" element={<Login />} />

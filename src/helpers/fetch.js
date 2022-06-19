@@ -25,28 +25,33 @@ const refreshToken = async (token) => {
             }
 
             const { token } = data;
-
-
-            return data;
+            localStorage.setItem("authToken", JSON.stringify({ accessToken: token }))
+            return token;
         } catch (err) {
             throw new Error(err.message)
         }
     }
 }
 
-async function Fetch(url, config = {}) {
-    const tokenData = localStorage.getItem("token")
-    let token = cookie.split("=")[1];
+async function fetchData(url, config = {}) {
 
-    // exp gives us date in milliseconds
-    let { exp } = jwtDecode(token)
-    // convert milliseconds -> seconds
-    let date = new Date().getTime() / 1000;
-    // check if exp date is < the present date
-    if (exp < date) {
-        const reftoken = getLocalstorage()
-        let authToken = await refreshToken(reftoken.refreshToken)
-        token = authToken.accessTokens
+}
+
+async function Fetch(url, config = {}) {
+    const tokenData = localStorage.getItem("authToken") === null ? null : JSON.parse(localStorage.getItem("authToken"))
+    let token = tokenData === null ? null : tokenData?.accessToken
+
+    if (token) {
+        console.log("TOKEN AVAILABLE");
+        // exp gives us date in milliseconds
+        let { exp } = jwtDecode(token)
+        // convert milliseconds -> seconds
+        let date = new Date().getTime() / 1000;
+        // check if exp date is < the present date
+        if (exp < date) {
+            let authToken = await refreshToken(tokenData.accessToken)
+            token = authToken
+        }
     }
     // add headers begfore making requests
     config["headers"] = {
