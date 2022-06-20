@@ -231,7 +231,6 @@ function TemplateCont({ toggleTemplate, template }) {
 
     const toggleTestName = (e) => {
         let name = e.target.name;
-        console.log(e.target);
         if (name !== undefined) {
             setActiveTestName(name)
         }

@@ -129,7 +129,7 @@ function LoginForm({ toggleForm, setActiveName }) {
             notif.success(result.message)
             localStorage.setItem("tymonial", JSON.stringify({ id, name }))
             localStorage.setItem("authToken", JSON.stringify({ accessToken: token }))
-            await sleep(2)
+            await sleep(1)
             window.location = "/dashboard"
         } catch (err) {
             console.log(err);

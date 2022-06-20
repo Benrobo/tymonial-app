@@ -23,6 +23,7 @@ function FormPage({ templateId }) {
     useEffect(() => {
         if (templateId === undefined) return
         fetchTemplateFormData()
+        // console.log(formData);
     }, [])
 
     async function fetchTemplateFormData() {
@@ -64,8 +65,8 @@ function FormPage({ templateId }) {
             </div>
             <br />
 
-            {activeFormName === "ui" && <FormUI />}
-            {activeFormName === "config" && <FormConfig formData={formData} templateId={templateId} />}
+            {(activeFormName === "ui" && Object.entries(formData).length > 0) && <FormUI formData={formData} templateId={templateId} />}
+            {(activeFormName === "config" && Object.entries(formData).length > 0) && <FormConfig formData={formData} templateId={templateId} />}
         </div>
     )
 }
@@ -74,9 +75,7 @@ export default FormPage
 
 function FormUI({ formData, templateId }) {
 
-    const { isProfilePic, isRatings, isUserCareer, formInputs, ratingsVal, setRatingsVal, formColors } = useContext(TemplateContext)
-
-    console.log(formData);
+    const { setRatingsVal, formColors } = useContext(TemplateContext)
 
     return (
         <div className="w-full h-screen bg-[#000] flex flex-col items-center justify-center ">
@@ -128,7 +127,7 @@ function FormUI({ formData, templateId }) {
                             </select>
                         </div>}
                         {formData?.ratings && <div className="w-[50%] flex flex-row items-end justify-end ">
-                            <StarRate count={parseInt(ratingsVal)} color={formColors.ratingColor} />
+                            <StarRate count={parseInt(5)} color={formColors.ratingColor} />
                         </div>}
                     </div>
                     <br />
