@@ -19,22 +19,67 @@ function Templates() {
     const { isAuthenticated } = useContext(DataContext)
     const [activeTemplate, setActiveTemplate] = useState(false)
     const [activeCreateTemplate, setActiveCreateTemplate] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+    const [templates, setTemplates] = useState([])
+    const [selectedTemplate, setSelectedTemplate] = useState({})
 
 
     let user = JSON.parse(localStorage.getItem("tymonial"))
 
-    useEffect(() => {
-
-    }, [])
-
     // toggleTestForm
-    const toggleTemplate = () => setActiveTemplate(!activeTemplate)
+    const hideTemplate = () => setActiveTemplate(false)
     // toggle create template form
     const toggleCreateTemplate = () => setActiveCreateTemplate(!activeCreateTemplate)
 
-    // if (!isAuthenticated) {
-    //     return window.location = "/login"
-    // }
+    async function fetchTemplates() {
+        try {
+            setLoading(true)
+            const req = await Fetch(API_ROUTES.getTemplate, {
+                method: "POST",
+                body: JSON.stringify({ userId: user?.id })
+            })
+
+            const { res, data } = req;
+
+            setLoading(false)
+
+            if (data.error) {
+                console.log(data);
+                return setError(data.message)
+            }
+
+            setTemplates([...data.data])
+            // console.log(data.data);
+        } catch (e) {
+            setLoading(false)
+            setError(e.message)
+        }
+
+    }
+
+    function selectTemplate(e) {
+        let dataset = e.target.dataset;
+
+        if (Object.entries(dataset).length === 0) return;
+
+        const { temp_id } = dataset;
+
+        const filteredTemplate = templates.filter(temp => temp.id === temp_id)
+
+        setSelectedTemplate(...filteredTemplate)
+        setActiveTemplate(true)
+    }
+
+    useEffect(() => {
+        fetchTemplates()
+        console.log(templates);
+    }, [])
+
+
+    if (!isAuthenticated) {
+        return window.location = "/login"
+    }
 
     return (
         <Layout>
@@ -50,28 +95,42 @@ function Templates() {
 
                     {activeCreateTemplate && <CreateTemplateForm toggleActive={toggleCreateTemplate} />}
 
-                    {!activeTemplate && <div className="w-full h-screen flex flex-col items-start justify-start bg-dark-600 rounded-md  p-2 gap-5 overflow-y-auto  ">
+                    {!activeTemplate && <div className="w-full h-[450px] flex flex-col items-start justify-start bg-dark-600 rounded-md  p-2 gap-5 overflow-y-auto  ">
                         {
-                            Array(3).fill().map((i) => {
-                                return (
-                                    <div id="card" onClick={toggleTemplate} key={i} className="w-full bg-dark-200 rounded-md cursor-pointer relative mt-2 flex flex-row items-center justify-between p-4 ">
-                                        <div id="left" className="w-[50%] flex flex-row items-start justify-start ">
-                                            <MdOutlineDescription className=' text-[70px] text-white-300 mr-10' />
-                                            <div className="w-full flex flex-col items-start justify-start">
-                                                <h2 className="text-white-100 text-[25px] ">Template Name</h2>
-                                                <p className="text-white-200">template_ID</p>
-                                            </div>
-                                        </div>
-                                        <div id="right" className="w-[50%] flex flex-row items-end justify-end">
-                                            <button className="px-3 py-1 rounded-md bg-red-500 scale-[.75] ">Delete</button>
-                                        </div>
-                                    </div>
-                                )
-                            })
+                            loading ?
+                                <p className="w-full text-center py-10 text-white-200">
+                                    <b>Loading...</b>
+                                    <br />
+                                    <span>Fetching templates</span>
+                                </p>
+                                :
+                                error !== null ?
+                                    <p className="w-full text-white-200">{error}</p>
+                                    :
+                                    templates.length === 0 ?
+                                        <p className="w-full text-white-200">No templates created yet.</p>
+                                        :
+                                        templates.map((list, i) => {
+                                            return (
+                                                <div id="card" data-temp_id={list.id} onClick={selectTemplate} key={i} className="w-full bg-dark-200 rounded-md cursor-pointer relative mt-2 flex flex-row items-center justify-between p-4 ">
+                                                    <div id="left" className="w-auto flex flex-row items-start justify-start hover:cursor-default ">
+                                                        <MdOutlineDescription className=' text-[70px] text-white-300 mr-10' />
+                                                        <div className="w-full flex flex-col items-start justify-start">
+                                                            <h2 className="text-white-100 text-[25px] capitalize ">{list.name}</h2>
+                                                            <p className="text-white-200">{list.id}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div id="right" className="w-auto flex flex-row items-end justify-end">
+                                                        <button className="px-3 py-1 rounded-md bg-red-500 scale-[.75] ">Delete</button>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
                         }
+                        <div className="w-full h-[120px]"></div>
                     </div>}
 
-                    {activeTemplate && <TemplateCont toggleTemplate={toggleTemplate} />}
+                    {activeTemplate && <TemplateCont template={selectedTemplate} toggleTemplate={hideTemplate} />}
                 </div>
             </div>
         </Layout>
@@ -157,12 +216,17 @@ function CreateTemplateForm({ toggleActive }) {
 }
 
 
-function TemplateCont({ toggleTemplate }) {
+function TemplateCont({ toggleTemplate, template }) {
 
     const [activeTestimonialForm, setActiveTestimonialForm] = useState(false);
     const [activeTestName, setActiveTestName] = useState("form-ui")
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+    const [formData, setFormData] = useState({})
 
     // toggleTestForm
+    let user = JSON.parse(localStorage.getItem("tymonial"))
+
     const toggleTestForm = () => setActiveTestName("")
 
     const toggleTestName = (e) => {
@@ -173,13 +237,44 @@ function TemplateCont({ toggleTemplate }) {
         }
     }
 
+    useEffect(() => {
+        fetchTemplateFormData()
+    }, [])
+
+    async function fetchTemplateFormData() {
+        try {
+            setLoading(true)
+            const req = await Fetch(API_ROUTES.getTemplateForm, {
+                method: "POST",
+                body: JSON.stringify({
+                    userId: user?.id,
+                    templateId: template?.id
+                })
+            })
+
+            const { res, data } = req;
+
+            setLoading(false)
+
+            if (data.error) {
+                return setError(data.message)
+            }
+
+            setFormData(data.data[0])
+            // console.log(data.data);
+        } catch (e) {
+            setLoading(false)
+            setError(e.message)
+        }
+    }
+
     return (
         <div className="w-full h-auto overflow-y-scroll px-3 ">
             <div id="head" className="w-full h-auto p-3  flex flex-row items-center justify-start ">
                 <button className={`rounded-md ml-5 px-4 py-2 bg-dark-200 text-white-200 mr-5 font-extrabold scale-[.90] hover:scale-[.95] transition-all `} onClick={toggleTemplate}>
                     Back
                 </button>
-                <p className="text-white-100 font-extrabold">Template Name</p>
+                <p className="text-white-100 font-extrabold capitalize ">{template?.name}</p>
             </div>
 
             <div className="w-full h-screen">
@@ -201,10 +296,17 @@ function TemplateCont({ toggleTemplate }) {
 
                 {
                     activeTestName === "form-ui" ?
-                        <TestimonialForm toggleTestName={toggleTestName} />
+                        loading ?
+                            <p className="w-full text-white-200">Template Form Loading...</p>
+                            :
+                            error !== null ?
+                                <p className="w-full text-white-200">{error}</p>
+                                :
+                                Object.entries(formData).length > 0 &&
+                                <TestimonialForm toggleTestName={toggleTestName} formData={formData} templateId={template?.id} />
                         :
                         activeTestName === "form-page" ?
-                            <FormPage />
+                            <FormPage templateId={template?.id} formData={formData} />
                             :
                             activeTestName === "testimonial-ui" ?
                                 <Testimonial />

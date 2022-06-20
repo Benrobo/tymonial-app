@@ -5,9 +5,8 @@ import { BASE_URL } from "../config"
 
 
 
-const refreshToken = async (token) => {
-    if (token !== undefined || token !== "") {
-
+const refreshToken = async (accessToken) => {
+    if (accessToken !== undefined || accessToken !== "") {
         try {
             let url = `${BASE_URL}/auth/refresh`
             let res = await fetch(url, {
@@ -15,7 +14,7 @@ const refreshToken = async (token) => {
                 headers: {
                     "content-type": "application/json"
                 },
-                body: JSON.stringify({ token })
+                body: JSON.stringify({ token: accessToken })
             })
 
             let data = await res.json()
@@ -42,14 +41,14 @@ async function Fetch(url, config = {}) {
     let token = tokenData === null ? null : tokenData?.accessToken
 
     if (token) {
-        console.log("TOKEN AVAILABLE");
         // exp gives us date in milliseconds
         let { exp } = jwtDecode(token)
         // convert milliseconds -> seconds
         let date = new Date().getTime() / 1000;
         // check if exp date is < the present date
         if (exp < date) {
-            let authToken = await refreshToken(tokenData.accessToken)
+            // console.log("TOKEN AVAILABLE", token);
+            let authToken = await refreshToken(token)
             token = authToken
         }
     }

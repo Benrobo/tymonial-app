@@ -1,15 +1,54 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { ColorPallete, Input, StarRate } from '../../components/UI-COMP';
+import API_ROUTES from '../../config/apiRoutes';
 import TemplateContext from '../../context/TemplateContext';
+import Fetch from '../../helpers/fetch';
 
-function FormPage() {
+function FormPage({ templateId }) {
 
     const [activeFormName, setActiveFormName] = useState("ui")
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+    const [formData, setFormData] = useState({})
+
+    let user = JSON.parse(localStorage.getItem("tymonial"))
 
     const toggleTestName = (e) => {
         const name = e.target.name;
         if (name !== undefined) {
             setActiveFormName(name)
+        }
+    }
+
+    useEffect(() => {
+        if (templateId === undefined) return
+        fetchTemplateFormData()
+    }, [])
+
+    async function fetchTemplateFormData() {
+        try {
+            setLoading(true)
+            const req = await Fetch(API_ROUTES.getTemplateForm, {
+                method: "POST",
+                body: JSON.stringify({
+                    userId: user?.id,
+                    templateId
+                })
+            })
+
+            const { res, data } = req;
+
+            setLoading(false)
+
+            if (data.error) {
+                return setError(data.message)
+            }
+
+            setFormData(data.data[0])
+            // console.log(data.data);
+        } catch (e) {
+            setLoading(false)
+            setError(e.message)
         }
     }
 
@@ -26,16 +65,18 @@ function FormPage() {
             <br />
 
             {activeFormName === "ui" && <FormUI />}
-            {activeFormName === "config" && <FormConfig />}
+            {activeFormName === "config" && <FormConfig formData={formData} templateId={templateId} />}
         </div>
     )
 }
 
 export default FormPage
 
-function FormUI() {
+function FormUI({ formData, templateId }) {
 
     const { isProfilePic, isRatings, isUserCareer, formInputs, ratingsVal, setRatingsVal, formColors } = useContext(TemplateContext)
+
+    console.log(formData);
 
     return (
         <div className="w-full h-screen bg-[#000] flex flex-col items-center justify-center ">
@@ -50,28 +91,28 @@ function FormUI() {
                 }}>
                     <h2 className="text-[20px] " style={{
                         color: formColors.headerPriColor
-                    }}>{formInputs.heading}</h2>
+                    }}>{formData?.heading}</h2>
                     <p className="text-white-300 text-[15px] " style={{
                         color: formColors.headerSecColor
-                    }}>{formInputs.subHeading}</p>
+                    }}>{formData?.subHeading}</p>
                 </div>
-                {isProfilePic && <img src={"https://avatars.dicebear.com/api/micah/dsfcsdfcdsddsyour-custom-seed.svg"} alt="" className="absolute right-5 top-8 shadow-lg bg-dark-100 w-[80px] h-[80px] rounded-[100%] outline-none " />}
+                {formData?.profileImg && <img src={"https://avatars.dicebear.com/api/micah/dsfcsdfcdsddsyour-custom-seed.svg"} alt="" className="absolute right-5 top-8 shadow-lg bg-dark-100 w-[80px] h-[80px] rounded-[100%] outline-none " />}
 
                 <div className="w-full flex-col items-start justify-start p-4">
                     <div className="w-full flex flex-row items-center justify-between mt-5">
-                        <div className={`${isProfilePic ? "w-[50%]" : "w-full"}`}>
+                        <div className={`${formData?.profileImg ? "w-[50%]" : "w-full"}`}>
                             <Input placeholder="Full Name" style={{
                                 background: formColors.inputBg,
                                 color: formColors.inputColor
                             }} />
                         </div>
-                        {isProfilePic && <button className="bg-dark-200 px-4 py-2 cursor-pointer rounded-md text-white-100" style={{
+                        {formData?.profileImg && <button className="bg-dark-200 px-4 py-2 cursor-pointer rounded-md text-white-100" style={{
                             background: formColors.inputBg,
                             color: formColors.inputColor
                         }}>Upload Image</button>}
                     </div>
                     <div className="w-full flex flex-row items-center justify-between mt-5">
-                        {isRatings && <div className="w-[50%]">
+                        {formData?.ratings && <div className="w-[50%]">
                             <select className="w-full h-auto px-4 py-2 rounded-md bg-dark-200" onChange={(e) => { setRatingsVal(e.target.value) }} style={{
                                 background: formColors.inputBg,
                                 color: formColors.inputColor
@@ -86,12 +127,12 @@ function FormUI() {
                                 }
                             </select>
                         </div>}
-                        {isRatings && <div className="w-[50%] flex flex-row items-end justify-end ">
+                        {formData?.ratings && <div className="w-[50%] flex flex-row items-end justify-end ">
                             <StarRate count={parseInt(ratingsVal)} color={formColors.ratingColor} />
                         </div>}
                     </div>
                     <br />
-                    {isUserCareer && <Input placeholder="Career: ( Software Engineer, Designer... )" style={{
+                    {formData?.userCareer && <Input placeholder="Career: ( Software Engineer, Designer... )" style={{
                         background: formColors.inputBg,
                         color: formColors.inputColor
                     }} />}
