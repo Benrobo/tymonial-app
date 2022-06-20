@@ -8,7 +8,9 @@ const API_ROUTES = {
     getTemplate: `${BASE_URL}/templates/get`,
     createTemplate: `${BASE_URL}/templates/create`,
     getTemplateForm: `${BASE_URL}/templates/form/get`,
+    getTemplateFeedbackForm: `${BASE_URL}/templates/form/getFeedbackForm`,
     updateTemplateForm: `${BASE_URL}/templates/form/updateForm`,
+    addFeedback: `${BASE_URL}/feedbacks/add`,
 }
 
 export default API_ROUTES

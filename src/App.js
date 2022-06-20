@@ -9,6 +9,7 @@ import Templates from "./pages/templates";
 import { TemplateContextProvider } from "./context/TemplateContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import FeedBacks from "./pages/feedbacks/feedbacks";
+import FeedBackForm from "./pages/feedbackForm";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
               <Route path="/template" element={<ProtectedRoute path="/" component={<Templates />} />} />
               <Route path="/feedbacks" element={<ProtectedRoute path="/" component={<FeedBacks />} />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/feedback/:id" element={<ProtectedRoute path="/" component={<Login />} />} />
+              <Route path="/feedback/:template_id/" element={<FeedBackForm />} />
             </Routes>
           </Router>
         </TemplateContextProvider>
