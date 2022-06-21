@@ -20,6 +20,7 @@ function Templates() {
     const [activeTemplate, setActiveTemplate] = useState(false)
     const [activeCreateTemplate, setActiveCreateTemplate] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [delloading, setDelLoading] = useState(false);
     const [error, setError] = useState(null)
     const [templates, setTemplates] = useState([])
     const [selectedTemplate, setSelectedTemplate] = useState({})
@@ -46,7 +47,11 @@ function Templates() {
 
             if (data.error) {
                 console.log(data);
-                return setError(data.message)
+                setError(data.message)
+                if (res.status === 403) {
+                    window.location.reload()
+                }
+                return
             }
 
             setTemplates([...data.data])
@@ -81,6 +86,39 @@ function Templates() {
         return window.location = "/login"
     }
 
+    async function deleteSelectedTemplate(e) {
+        let templateId = e.target.id;
+
+        if (templateId === "") return
+
+        const ask = window.confirm("Are you sure about this action?")
+        if (!ask) return
+
+        try {
+            setDelLoading(true)
+            const result = await Fetch(API_ROUTES.deleteTemplate, {
+                method: "DELETE",
+                body: JSON.stringify({
+                    userId: user?.id,
+                    templateId,
+                })
+            })
+            const { data } = result;
+
+            if (data.error) {
+                setDelLoading(false)
+                notif.error(data.message)
+            }
+            setDelLoading(false)
+            window.location.reload(true)
+            return
+        } catch (e) {
+            setDelLoading(false)
+            notif.error(e.message)
+            console.error(e)
+        }
+    }
+
     return (
         <Layout>
             <div className="relative  flex flex-row items-start justify-start w-screen h-screen overflow-hidden ">
@@ -112,7 +150,7 @@ function Templates() {
                                         :
                                         templates.map((list, i) => {
                                             return (
-                                                <div id="card" data-temp_id={list.id} onClick={selectTemplate} key={i} className="w-full bg-dark-200 rounded-md cursor-pointer relative mt-2 flex flex-row items-center justify-between p-4 ">
+                                                <div id="card" data-temp_id={list.id} onClick={selectTemplate} key={list.id} className="w-full bg-dark-200 rounded-md cursor-pointer relative mt-2 flex flex-row items-center justify-between p-4 ">
                                                     <div id="left" className="w-auto flex flex-row items-start justify-start hover:cursor-default ">
                                                         <MdOutlineDescription className=' text-[70px] text-white-300 mr-10' />
                                                         <div className="w-full flex flex-col items-start justify-start">
@@ -120,8 +158,10 @@ function Templates() {
                                                             <p className="text-white-200">{list.id}</p>
                                                         </div>
                                                     </div>
-                                                    <div id="right" className="w-auto flex flex-row items-end justify-end">
-                                                        <button className="px-3 py-1 rounded-md bg-red-500 scale-[.75] ">Delete</button>
+                                                    <div id="right" className="flex flex-row items-end justify-end">
+                                                        <button className="px-6 py-3 rounded-md bg-red-500 scale-[.75] " id={list.id} onClick={deleteSelectedTemplate} >
+                                                            {delloading ? "Deleting..." : "Delete"}
+                                                        </button>
                                                     </div>
                                                 </div>
                                             )
@@ -130,7 +170,7 @@ function Templates() {
                         <div className="w-full h-[120px]"></div>
                     </div>}
 
-                    {activeTemplate && <TemplateCont template={selectedTemplate} toggleTemplate={hideTemplate} />}
+                    {(activeTemplate) && <TemplateCont template={selectedTemplate} toggleTemplate={hideTemplate} />}
                 </div>
             </div>
         </Layout>
@@ -311,7 +351,7 @@ function TemplateCont({ toggleTemplate, template }) {
                                 <Testimonial />
                                 :
                                 activeTestName === "settings" ?
-                                    <TemplateSettings />
+                                    <TemplateSettings templateId={template?.id} />
                                     :
                                     ""
                 }

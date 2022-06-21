@@ -1,10 +1,10 @@
 import React, { useState, useContext, useRef } from 'react'
 
-function TemplateSettings() {
+function TemplateSettings({ templateId }) {
 
     const [isCopied, setIsCopied] = useState(false)
 
-    const formUrl = `http://localhost:3000/feedback/template_id`
+    const formUrl = `http://localhost:3000/feedback/${templateId}`
 
     if (isCopied) {
         setTimeout(() => {
@@ -32,6 +32,9 @@ function TemplateSettings() {
                     Feedback Form URL
                 </p>
                 <p className="text-white-300 text-[12px] ">Copy, Share and Get feedback from this url.</p>
+                <br />
+                <a href={formUrl} target="_blank" className="text-green-200 underline text-[12px]">{formUrl}</a>
+                <br />
                 <br />
                 <div className="w-[350px] flex flex-row items-end justify-between overflow-x-hidden h-[45px] rounded-md mr-2 ">
                     <input type="text" value={formUrl} className="w-[350px]  px-3 py-3 bg-dark-200 text-white-200 outline-none border-none" />

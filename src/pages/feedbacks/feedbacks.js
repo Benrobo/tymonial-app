@@ -5,6 +5,9 @@ import Switch from "react-switch";
 import Fetch from "../../helpers/fetch"
 import API_ROUTES from '../../config/apiRoutes';
 import moment from "moment"
+import { Notification } from '../../helpers';
+
+const notif = new Notification(4000)
 
 function FeedBacks() {
 
@@ -30,6 +33,10 @@ function FeedBacks() {
 
             if (data && data.error) {
                 setError(data.message)
+                if (res.status === 403) {
+                    window.location.reload()
+                }
+                return
             }
 
             setFeedbacks([...data.data])
@@ -55,9 +62,9 @@ function FeedBacks() {
                             <span className={`px-4 py-1 ${true ? "bg-green-200 text-dark-100" : "bg-dark-200 text-white-200"} font-extrabold rounded-md`}>
                                 All
                             </span>
-                            <span className={`px-3 py-1 ${false ? "bg-green-200 text-dark-2" : "bg-dark-200 text-white-200"} font-extrabold rounded-md`}>
+                            {/* <span className={`px-3 py-1 ${false ? "bg-green-200 text-dark-2" : "bg-dark-200 text-white-200"} font-extrabold rounded-md`}>
                                 temp_xxxxx
-                            </span>
+                            </span> */}
                         </div>
                     </div>
                     <br />
@@ -105,18 +112,87 @@ export default FeedBacks
 
 function FeedbackRows({ keys, data }) {
 
+    const [loading, setLoading] = useState(false);
+    const [delloading, setDelLoading] = useState(false);
     const [userData, setUserData] = useState({
         published: data?.published
     })
 
-    async function publishFeedback() {
-        let beSure;
-        if (userData.published === false) {
-            beSure = window.confirm("Are you sure you would like to published this feedback?")
-        }
-        // if (!beSure) return
+    let user = JSON.parse(localStorage.getItem("tymonial"))
 
-        setUserData((prevVal) => ({ ...prevVal, ['published']: !userData.published }))
+
+    async function publishFeedback(e) {
+        let dataset = e.target.dataset;
+
+        if (Object.entries(dataset).length > 0) {
+            const { id } = dataset;
+            try {
+                setLoading(true)
+                const isPub = userData.published === false ? true : false;
+                const result = await Fetch(API_ROUTES.publishFeedback, {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        userId: user?.id,
+                        id,
+                        published: isPub
+                    })
+                })
+
+                const { data } = result;
+
+                if (data.error) {
+                    setLoading(false)
+                    return notif.error(data.message)
+                }
+                setLoading(false)
+                setUserData((prevVal) => ({ ...prevVal, ['published']: !userData.published }))
+                return
+            } catch (e) {
+                setLoading(false)
+                notif.error(e.message)
+                console.error(e)
+            }
+        }
+    }
+
+    async function deleteFeedback(e) {
+        let dataset = e.target.dataset;
+
+        if (Object.entries(dataset).length > 0) {
+            const { id } = dataset;
+            try {
+                const check = window.confirm("Are you sure about this action.")
+
+                if (!check) return;
+
+                setDelLoading(true)
+                const result = await Fetch(API_ROUTES.deleteFeedback, {
+                    method: "DELETE",
+                    body: JSON.stringify({
+                        userId: user?.id,
+                        id,
+                    })
+                })
+                const { res, data } = result;
+
+                if (data.error) {
+                    setDelLoading(false)
+                    notif.error(data.message)
+
+                    if (res.status === 403) {
+                        window.alert("Something went wrong, reload page to confinue")
+                    }
+                    return
+                }
+                setDelLoading(false)
+                window.location.reload(true)
+                return
+            } catch (e) {
+                setDelLoading(false)
+                notif.error(e.message)
+                console.error(e)
+            }
+        }
     }
 
     return (
@@ -128,7 +204,7 @@ function FeedbackRows({ keys, data }) {
             </td>
             <td className=' py-4 px-6 '>
                 <small className="text-white-100 text-[15px] ">
-                    {data?.message}
+                    {data?.message.slice(0, 30)}...
                 </small>
             </td>
             <td className=' py-4 px-6 '>
@@ -139,8 +215,17 @@ function FeedbackRows({ keys, data }) {
                     {data?.ratings}
                 </small>
             </td>
-            <td className=' py-4 px-6 '>
-                <Switch checked={userData.published} onChange={publishFeedback} />
+            <td className=' py-4 px-6 flex flex-row items-center justify-start '>
+                {/* <Switch checked={userData.published} onChange={publishFeedback} /> */}
+                {
+                    loading ?
+                        <small className="text-white-200">Publishing...</small>
+                        :
+                        <>
+                            <input type="checkbox" checked={userData.published} data-id={data?.feedbackId} onChange={publishFeedback} />
+                            <small className='ml-4 text-white-300 '>{userData.published ? "Yes" : "No"}</small>
+                        </>
+                }
             </td>
             <td className=' py-4 px-6 '>
                 <small className="text-white-300 text-[12px] ">
@@ -148,8 +233,9 @@ function FeedbackRows({ keys, data }) {
                 </small>
             </td>
             <td className=' py-4 px-6 flex flex-col items-start justify-start gap-3'>
-                <button className="px-3 py-1 bg-dark-200 rounded-md scale-[.70] " data-id={data?.feedbackId}>View</button>
-                <button className="px-3 py-1 bg-red-500 text-white-100 rounded-md scale-[.70] " data-id={data?.feedbackId} >Delete</button>
+                <button className="px-3 py-1 bg-red-500 text-white-100 rounded-md scale-[.70] " onClick={deleteFeedback} data-id={data?.feedbackId} >
+                    {delloading ? "Deleting..." : "Delete"}
+                </button>
             </td>
         </tr>
     )
