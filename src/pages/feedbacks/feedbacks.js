@@ -148,8 +148,8 @@ function FeedbackRows({ keys, data }) {
                 </small>
             </td>
             <td className=' py-4 px-6 flex flex-col items-start justify-start gap-3'>
-                <button className="px-3 py-1 bg-dark-200 rounded-md scale-[.70] ">View</button>
-                <button className="px-3 py-1 bg-red-500 text-white-100 rounded-md scale-[.70] ">Delete</button>
+                <button className="px-3 py-1 bg-dark-200 rounded-md scale-[.70] " data-id={data?.feedbackId}>View</button>
+                <button className="px-3 py-1 bg-red-500 text-white-100 rounded-md scale-[.70] " data-id={data?.feedbackId} >Delete</button>
             </td>
         </tr>
     )
