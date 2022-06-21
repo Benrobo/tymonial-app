@@ -10,6 +10,7 @@ const API_ROUTES = {
     getTemplateForm: `${BASE_URL}/templates/form/get`,
     getTemplateFeedbackForm: `${BASE_URL}/templates/form/getFeedbackForm`,
     updateTemplateForm: `${BASE_URL}/templates/form/updateForm`,
+    getFeedback: `${BASE_URL}/feedbacks/get`,
     addFeedback: `${BASE_URL}/feedbacks/add`,
 }
 
