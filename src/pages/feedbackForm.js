@@ -100,6 +100,8 @@ function FormUI({ formData, templateId, setSuccessMsg }) {
         profileImg: ""
     })
 
+    const MAX_WORD = 300
+
     const fileRef = useRef(null)
 
     const userId = formData?.userId;
@@ -248,12 +250,15 @@ function FormUI({ formData, templateId, setSuccessMsg }) {
                             background: formColors.inputBg,
                             color: formColors.inputColor
                         }} />}
-
+                    <br />
+                    <span className="text-white-200 text-[12px] ">
+                        Word remaining <span className="ml-2">{MAX_WORD - inputs.message.length} / {MAX_WORD}</span>
+                    </span>
                     <textarea cols="30" rows="3" style={{
                         background: formColors.inputBg,
                         color: formColors.inputColor
                     }} name="message"
-                        onChange={handleInput} className="w-full p-4 rounded-md bg-dark-200 text-white-100 resize-none mt-5" placeholder='Feedback Mesage' maxLength={100}></textarea>
+                        onChange={handleInput} className="w-full p-4 rounded-md bg-dark-200 text-white-100 resize-none mt-5" placeholder='Feedback Mesage' maxLength={MAX_WORD}></textarea>
 
                     <button onClick={submitFeedback} className="px-4 py-3 w-full rounded-md bg-green-200 text-dark-100 font-extrabold mt-5" style={{
                         background: formColors.buttonBg,

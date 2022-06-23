@@ -4,7 +4,8 @@ function TemplateSettings({ templateId }) {
 
     const [isCopied, setIsCopied] = useState(false)
 
-    const formUrl = `http://localhost:3000/feedback/${templateId}`
+    const { origin } = window.location;
+    const formUrl = `${origin}/feedback/${templateId}`
 
     if (isCopied) {
         setTimeout(() => {

@@ -10,6 +10,7 @@ import { TemplateContextProvider } from "./context/TemplateContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import FeedBacks from "./pages/feedbacks/feedbacks";
 import FeedBackForm from "./pages/feedbackForm";
+import Settings from "./pages/settings";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/feedbacks" element={<ProtectedRoute path="/" component={<FeedBacks />} />} />
               <Route path="/login" element={<Login />} />
               <Route path="/feedback/:template_id/" element={<FeedBackForm />} />
+              <Route path="/settings" element={<ProtectedRoute path="/" component={<Settings />} />} />
             </Routes>
           </Router>
         </TemplateContextProvider>

@@ -27,8 +27,8 @@ function SideBar({ active }) {
                             FeedBacks
                         </li>
                     </Link>
-                    <Link to="/stats" className="w-full">
-                        <li className={`w-full mt-4 px-4 py-3 font-extrabold rounded-md cursor-pointer ${active === "stats" ? "bg-green-200 text-dark-100" : "bg-dark-100 text-white-100"}`}>
+                    <Link to="/settings" className="w-full">
+                        <li className={`w-full mt-4 px-4 py-3 font-extrabold rounded-md cursor-pointer ${active === "settings" ? "bg-green-200 text-dark-100" : "bg-dark-100 text-white-100"}`}>
                             Settings
                         </li>
                     </Link>
