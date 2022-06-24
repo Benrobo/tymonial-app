@@ -3,10 +3,9 @@ import { Layout, DomHead, NavBar } from "../components";
 import SideBar from '../components/Navbar/SideBar';
 import DataContext from '../context/DataContext';
 import { Notification } from '../helpers';
-import moment from "moment"
 import API_ROUTES from '../config/apiRoutes';
 import Fetch from '../helpers/fetch';
-import { Bar, Doughnut, Line, Pie, Radar } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJs } from "chart.js/auto"
 
 const notif = new Notification(4000)
@@ -66,12 +65,12 @@ function Dashboard() {
                             <div id="card" className="w-[250px] h-auto p-3 flex flex-col items-start justify-start rounded-md bg-dark-200 mr-4">
                                 <h2 className="text-[12px] px-3 py-1 bg-green-600 text-green-200 mb-4 rounded-md ">Testimonials Feedbacks</h2>
                                 <h2 className="text-[30px] text-white-300 ">Approved</h2>
-                                <h2 className="text-[35px] font-extrabold ">{approvedfeedback}</h2>
+                                {loading ? <p className="text-white-200 mt-3">Loading...</p> : <h2 className="text-[35px] font-extrabold ">{approvedfeedback}</h2>}
                             </div>
                             <div id="card" className="w-[250px] h-auto p-3 flex flex-col items-start justify-start rounded-md bg-dark-200 mr-4">
                                 <h2 className="text-[12px] px-3 py-1 bg-green-600 text-green-200 mb-4 rounded-md ">Testimonials Feedbacks</h2>
                                 <h2 className="text-[30px] text-white-300 ">Pending</h2>
-                                <h2 className="text-[35px] font-extrabold ">{pendingfeedback}</h2>
+                                {loading ? <p className="text-white-200 mt-3">Loading...</p> : <h2 className="text-[35px] font-extrabold ">{pendingfeedback}</h2>}
                             </div>
                             <div id="card" className="w-[250px] h-auto p-3 flex flex-col items-start justify-start rounded-md bg-dark-200 mr-4">
                                 <h2 className="text-[12px] px-3 py-1 bg-green-600 text-green-200 mb-4 rounded-md ">All Feedbacks</h2>
@@ -79,7 +78,7 @@ function Dashboard() {
                                     <option value="" className="">template_ID</option>
                                 </select> */}
                                 <h2 className="text-[30px] text-white-300 ">Response</h2>
-                                <h2 className="text-[35px] font-extrabold ">{feedbacks.length}</h2>
+                                {loading ? <p className="text-white-200 mt-3">Loading...</p> : <h2 className="text-[35px] font-extrabold ">{feedbacks.length}</h2>}
                             </div>
                         </div>
                     </div>

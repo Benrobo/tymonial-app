@@ -117,6 +117,11 @@ export function Montage() {
     `
 
     const ReactCode = `
+
+    // REACT COMPONENT.
+
+    COMING SOON!!!!!!!!
+
     // import tymonial
     import Tymonial from "tymonial"
 

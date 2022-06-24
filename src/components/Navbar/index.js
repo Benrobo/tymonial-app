@@ -11,7 +11,7 @@ function NavBar() {
 
     return (
         <React.Fragment>
-            <div className={`relative h-[60px] w-screen bg-dark-200 flex items-center justify-between p-2 shadow-2xl`}>
+            <div className={`relative h-[60px] w-screen bg-dark-200 flex items-center justify-between p-2 px-7 shadow-2xl`}>
                 <h2 className="text-green-200 font-extrabold text-[20px] ">Tymonial</h2>
 
                 <div id="right" className=" px-4 flex flex-row items-center justify-between">
