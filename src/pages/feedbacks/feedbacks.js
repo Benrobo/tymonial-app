@@ -204,7 +204,7 @@ function FeedbackRows({ keys, data }) {
             </td>
             <td className=' py-4 px-6 '>
                 <small className="text-white-100 text-[15px] ">
-                    {data?.message.slice(0, 30)}...
+                    {data?.message}
                 </small>
             </td>
             <td className=' py-4 px-6 '>
