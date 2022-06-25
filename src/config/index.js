@@ -1,4 +1,4 @@
 
 
-export const BASE_URL = "https://tymomnial.tk/api"
+export const BASE_URL = "https://tymonial.tk/api"
 
