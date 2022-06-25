@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import FeedBacks from "./pages/feedbacks/feedbacks";
 import FeedBackForm from "./pages/feedbackForm";
 import Settings from "./pages/settings";
+import HomePage from "./pages/home";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         <TemplateContextProvider>
           <Router>
             <Routes>
-              <Route path="/" element={<ProtectedRoute path="/" component={<Dashboard />} />} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/dashboard" element={<ProtectedRoute path="/dashboard" component={<Dashboard />} />} />
               <Route path="/template" element={<ProtectedRoute path="/" component={<Templates />} />} />
               <Route path="/feedbacks" element={<ProtectedRoute path="/" component={<FeedBacks />} />} />

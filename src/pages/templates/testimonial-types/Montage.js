@@ -95,10 +95,10 @@ export function Montage() {
 
     const JsCode = `
     // Tymonial CSS
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tymonial/lib/css/tymonial.css" />
+    <link rel="stylesheet" href="https://unpkg.com/tymonial/lib/css/tymonial.css" />
 
     // Tymonial Javascript
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tymonial/lib/tymonial.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/tymonial@^1.8.0/lib/tymonial.js"></script>
 
     // initialize the tymonial object within a <script> tag
     new Tymonial({

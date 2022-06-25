@@ -63,7 +63,13 @@ body{
     background: var(--bg1);
 }
 
-
+.home-page{
+    background: var(--bg1);
+    background-image: radial-gradient(#ffffff1e 5%, transparent 2%),
+    radial-gradient(#ffffff10 2%, transparent 2%);
+    background-size:60px 60px;
+    background-position: 0 0, 30px 30px;
+}
 
 .btn {
     display: inline-block;
