@@ -5,6 +5,8 @@ Tymonial makes the process of collecting feedbacks from clients and customers po
 
 With little customization using the library, your feedback would be on set.
 
+> Please note. Due to inactivity within this application, `Tymonial` server is no longer `up` and `running`. Which means features offered by this application would no longer work. But, features can still be tested `locally` following the steps below.
+
 Follow the steps below in collecting feedbacks.
 
 ### Step 1
